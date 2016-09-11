@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import productions.funky.com.smokenomore.fragments.Graphs;
+import productions.funky.com.smokenomore.fragments.MainPage;
 
 public class Counter extends AppCompatActivity {
 
@@ -90,7 +91,13 @@ public class Counter extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return Graphs.newInstance(position + 1);
+            if (position == 0)
+            {
+                return MainPage.newInstance();
+            }
+            else {
+                return Graphs.newInstance(position + 1);
+            }
         }
 
         @Override
