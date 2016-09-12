@@ -20,6 +20,7 @@ import java.util.List;
 
 import productions.funky.com.smokenomore.R;
 import productions.funky.com.smokenomore.database.Counter;
+import productions.funky.com.smokenomore.util.Constants;
 import productions.funky.com.smokenomore.util.DateTimeMappers;
 
 /**
@@ -67,49 +68,39 @@ public class Graphs extends Fragment {
         }
     }
 
-    private void drawLast7Months() {
-        //GraphView graph = (GraphView) rootView.findViewById(R.id.graph_5_months);
-        GraphView graph = (GraphView) rootView.findViewById(R.id.graph_5_months);
-        BarGraphSeries <DataPoint> line_series = new BarGraphSeries <DataPoint >
-                        (new DataPoint[] {
-                new DataPoint(0, 17),
-                new DataPoint(1, 5),
-                new DataPoint(2, 43),
-                new DataPoint(3, 5),
-                new DataPoint(4, 3),
-                new DataPoint(5, 3)
-        });
-
-        graph.getViewport().setMaxX(7);
-        graph.addSeries(line_series);
-        graph.getGridLabelRenderer().setGridColor(0xFFFFFF);
-        graph.getGridLabelRenderer().setVerticalLabelsColor(0xFFFFFF);
-
+    private void drawGraph(int viewId, Constants.GRAPH_TYPES type) {
+        GraphView graph = (GraphView) rootView.findViewById(viewId);
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
-        staticLabelsFormatter.setHorizontalLabels(new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun"});
+        BarGraphSeries<DataPoint> series = null;
+        int maxVal = 20;
 
-        String vertical[] = dTMappers.getVerticalMappers(43);
-
-        staticLabelsFormatter.setVerticalLabels(vertical);
-        graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
-
-        line_series.setSpacing(30);
-        line_series.setDrawValuesOnTop(true);
-        line_series.setValuesOnTopColor(Color.RED);
-    }
-
-    private void drawLastSevenDays() {
-        GraphView graph = (GraphView) rootView.findViewById(R.id.graph_7_days);
-        BarGraphSeries<DataPoint> series = new BarGraphSeries<DataPoint>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 8),
-                new DataPoint(5, 2),
-                new DataPoint(6, 2),
-                new DataPoint(7, 3),
-        });
+        if (type == Constants.GRAPH_TYPES.GRAPH_TYPE_DAYS) {
+            staticLabelsFormatter.setHorizontalLabels(dTMappers.getDates(2));
+            series = new BarGraphSeries<DataPoint>(new DataPoint[] {
+                    new DataPoint(0, 1),
+                    new DataPoint(1, 5),
+                    new DataPoint(2, 3),
+                    new DataPoint(3, 2),
+                    new DataPoint(4, 8),
+                    new DataPoint(5, 2),
+                    new DataPoint(6, 2),
+                    new DataPoint(7, 3),
+            });
+            maxVal = 8;
+        } else if (type == Constants.GRAPH_TYPES.GRAPH_TYPE_MONTH) {
+            staticLabelsFormatter.setHorizontalLabels(dTMappers.getMonths(2));
+            series = new BarGraphSeries<DataPoint>(new DataPoint[] {
+                    new DataPoint(0, 1),
+                    new DataPoint(1, 25),
+                    new DataPoint(2, 17),
+                    new DataPoint(3, 18),
+                    new DataPoint(4, 19),
+                    new DataPoint(5, 22),
+                    new DataPoint(6, 15),
+                    new DataPoint(7, 12),
+            });
+            maxVal = 25;
+        }
 
         graph.addSeries(series);
         graph.getGridLabelRenderer().setGridColor(0xFFFFFF);
@@ -117,18 +108,16 @@ public class Graphs extends Fragment {
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setMaxX(7);
 
-        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
-        String[] last8Days = dTMappers.getDates(2);
-
-        staticLabelsFormatter.setHorizontalLabels(last8Days);
-        staticLabelsFormatter.setVerticalLabels(dTMappers.getVerticalMappers(8));
+        staticLabelsFormatter.setVerticalLabels(dTMappers.getVerticalMappers(maxVal));
         graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
 
         // styling
         series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
             @Override
             public int get(DataPoint data) {
-                return Color.rgb((int) data.getX() * 255 / 4, (int) Math.abs(data.getY() * 255 / 6), 100);
+                System.out.println(data.getX() + " " + data.getY());
+
+                return Color.rgb((int) data.getX() * 255 / 4, 0, 0);
             }
         });
 
@@ -138,8 +127,8 @@ public class Graphs extends Fragment {
     }
 
     private void drawGraphs() {
-        drawLastSevenDays();
-        drawLast7Months();
+        drawGraph(R.id.graph_days, Constants.GRAPH_TYPES.GRAPH_TYPE_DAYS);
+        drawGraph(R.id.graph_months, Constants.GRAPH_TYPES.GRAPH_TYPE_MONTH);
     }
 
     @Override

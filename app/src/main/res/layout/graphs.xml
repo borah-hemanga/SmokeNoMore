@@ -28,7 +28,7 @@
                 app:seriesData="0=0"
                 android:title="Last 7 days"
                 app:seriesType="bar"
-                android:id="@+id/graph_7_days"
+                android:id="@+id/graph_days"
                 />
         </LinearLayout>
 
@@ -44,9 +44,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 app:seriesData="0=0"
-                android:title="Last 5 months"
+                android:title="Last 6 months"
                 app:seriesType="bar"
-                android:id="@+id/graph_5_months"
+                android:id="@+id/graph_months"
                 />
         </LinearLayout>
     </LinearLayout>

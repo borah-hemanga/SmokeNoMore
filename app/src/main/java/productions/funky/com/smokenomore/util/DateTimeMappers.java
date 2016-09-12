@@ -5,15 +5,25 @@ package productions.funky.com.smokenomore.util;
  */
 public class DateTimeMappers {
     String Week[] = {"Su", "M", "T", "W", "Th", "F", "S"};
-    String Month[] = {"Ja", "Fe", "Mr", "Ap", "My", "Jn", "Jy", "Ag", "Sp", "Oc", "No", "De"};
+    String Month[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     int numDays = 8;
+    int numMonths = 6;
+
+    public String[] getMonths(int currMonth) {
+        String lastMonths[] = new String[numMonths];
+        for (int i = 0; i < numMonths; i++) {
+            int monthIndex = (12 + currMonth - numMonths + i + 1) % 12;
+            lastMonths[i] = Month[monthIndex];
+        }
+        return lastMonths;
+    }
 
     public String[] getDates(int currDay) {
-        String []last8Days = new String[numDays];
+        String []lastDays = new String[numDays];
         for (int i = 0; i < numDays; i++) {
-            last8Days[i] = Week[(currDay + i) % 7];
+            lastDays[i] = Week[(currDay + i) % 7];
         }
-        return last8Days;
+        return lastDays;
     }
 
     public String[] getVerticalMappers(int maxItem) {
