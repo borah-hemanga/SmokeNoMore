@@ -7,7 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Date;
+import java.util.List;
+
 import productions.funky.com.smokenomore.R;
+import productions.funky.com.smokenomore.database.Counter;
 
 /**
  * Created by hborah on 9/11/16.
@@ -34,12 +38,24 @@ public class Graphs extends Fragment {
     public Graphs() {
     }
 
+    private void testDB() {
+        Counter c = new Counter(new Date().toString(), 5);
+        c.save();
+
+        Date date = new Date();
+        List<Counter> dbAboutMe = Counter.find(Counter.class, "date = ?", date.toString());
+        for (Counter counter : dbAboutMe) {
+            System.out.println(counter.getCounts() + " " + counter.getDate());
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_counter, container, false);
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
         textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+        testDB();
         return rootView;
     }
 }
