@@ -117,7 +117,7 @@ public class Graphs extends Fragment {
             public int get(DataPoint data) {
                 System.out.println(data.getX() + " " + data.getY());
 
-                return Color.rgb((int) data.getX() * 255 / 4, 0, 0);
+                return Color.rgb( 255, 0, 0);
             }
         });
 
