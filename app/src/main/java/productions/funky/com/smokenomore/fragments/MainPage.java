@@ -7,13 +7,17 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.Date;
 
 import productions.funky.com.smokenomore.R;
 
@@ -43,9 +47,18 @@ public class MainPage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_main_page, container, false);
-        TextView counterText = (TextView)view.findViewById(R.id.count_text);
+        final View view = inflater.inflate(R.layout.fragment_main_page, container, false);
+        //TextView counterText = (TextView)view.findViewById(R.id.count_text);
         //((GradientDrawable)counterText.getBackground()).setStroke((int)dipToPixels(getActivity(), 10), Color.YELLOW);
+        FloatingActionButton add_button = (FloatingActionButton)view.findViewById(R.id.add_button);
+        add_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date date = new Date();
+                date.getDate();
+            }
+        });
+
         return view;
     }
 
