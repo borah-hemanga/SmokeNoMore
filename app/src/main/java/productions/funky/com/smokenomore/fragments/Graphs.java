@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -39,11 +41,17 @@ public class Graphs extends Fragment {
     }
 
     private void testDB() {
-        Counter c = new Counter(new Date().toString(), 5);
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date todayWithZeroTime = new Date();
+        try {
+            todayWithZeroTime = formatter.parse(formatter.format(todayWithZeroTime));
+        } catch (Exception e) {
+        }
+
+        Counter c = new Counter(todayWithZeroTime.toString(), 5);
         c.save();
 
-        Date date = new Date();
-        List<Counter> dbAboutMe = Counter.find(Counter.class, "date = ?", date.toString());
+        List<Counter> dbAboutMe = Counter.listAll(Counter.class);
         for (Counter counter : dbAboutMe) {
             System.out.println(counter.getCounts() + " " + counter.getDate());
         }
@@ -52,7 +60,7 @@ public class Graphs extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_counter, container, false);
+        View rootView = inflater.inflate(R.layout.graphs, container, false);
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
         textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
         testDB();
