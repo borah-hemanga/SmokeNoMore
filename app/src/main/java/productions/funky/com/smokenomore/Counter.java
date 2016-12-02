@@ -1,8 +1,6 @@
 package productions.funky.com.smokenomore;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -11,23 +9,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.view.ViewGroup;
 
 import productions.funky.com.smokenomore.fragments.Graphs;
+import productions.funky.com.smokenomore.fragments.GraphsAChartEngine;
 import productions.funky.com.smokenomore.fragments.MainPage;
+import productions.funky.com.smokenomore.fragments.NoSmokeActivityInterface;
+import productions.funky.com.smokenomore.fragments.NoSmokeFragmentInterface;
 
-public class Counter extends AppCompatActivity {
+public class Counter extends AppCompatActivity implements NoSmokeActivityInterface{
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
+    boolean ENABLE_ACHARTENGINEGRAPHS = true;
+    static final int MAX_COUNT_SUPPORTED = 300;
+
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
+    private MainPage mainPageFragment;
+    private GraphsAChartEngine graphsAChartEngineFragment;
+    private Graphs graphsFragment;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -51,29 +49,37 @@ public class Counter extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        mainPageFragment =  MainPage.newInstance();
+        if (ENABLE_ACHARTENGINEGRAPHS) {
+            graphsAChartEngineFragment = GraphsAChartEngine.newInstance();
+        } else{
+            graphsFragment = Graphs.newInstance(2);
+        }
+        childFragments = new NoSmokeFragmentInterface[CHILD_FRAGMENT_COUNT];
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_counter, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        /*if (id == R.id.action_settings) {
-            return true;
-        }*/
-
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCountChanged(int count) {
+        if (count > MAX_COUNT_SUPPORTED) {
+            return;
+        }
+        for (NoSmokeFragmentInterface i: childFragments)
+        {
+            i.setCountValue(count);
+        }
     }
 
 
@@ -89,15 +95,30 @@ public class Counter extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            if (position == 0)
-            {
-                return MainPage.newInstance();
+            if (position == 0){
+                return mainPageFragment;
             }
             else {
-                return Graphs.newInstance(position + 1);
+                if (ENABLE_ACHARTENGINEGRAPHS) {
+                    return graphsAChartEngineFragment;
+                } else{
+                    return graphsFragment;
+                }
             }
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment createdFragment = (Fragment) super.instantiateItem(container, position);
+            switch (position) {
+                case 0:
+                    childFragments[0] = (NoSmokeFragmentInterface) createdFragment;
+                    break;
+                case 1:
+                    childFragments[1] = (NoSmokeFragmentInterface) createdFragment;
+                    break;
+            }
+            return createdFragment;
         }
 
         @Override
@@ -116,4 +137,7 @@ public class Counter extends AppCompatActivity {
             return null;
         }
     }
+
+    static final int CHILD_FRAGMENT_COUNT = 2;
+    NoSmokeFragmentInterface[] childFragments;
 }

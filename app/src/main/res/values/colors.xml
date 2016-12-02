@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#282828</color>
-    <color name="colorPrimaryDark">#1e1e1e</color>
+    <color name="colorPrimary">#010105</color>
+    <color name="colorPrimaryDark">#010105</color>
     <color name="colorAccent">#cc213b</color>
-    <color name="MainPageBackground">#EEEEEE</color>
+    <color name="MainPageBackground">#0e0e10</color>
     <color name="InitialCounterColor">#40e0d0</color>
+    <color name="CounterBlue">#ff07a5aa</color>
+    <color name="CounterYellow1">#ff938b07</color>
+    <color name="CounterYellow2">#ffae7300</color>
+    <color name="CounterYellow3">#ffad5e00</color>
+    <color name="CounterYellow4">#ffac3a01</color>
+    <color name="CounterYellow5">#ffb32701</color>
+    <color name="CounterYellow6">#ff961402</color>
+    <color name="CounterYellow7">#ff6d0209</color>
+    <color name="CounterYellow8">#ff5e0007</color>
     <color name="InitialCounterBg">#999999</color>
+
+    <!--<color name="progress_gray">#FFD8D8D8</color>
+    <color name="progress_gray_dark">#FF383838</color>-->
 </resources>

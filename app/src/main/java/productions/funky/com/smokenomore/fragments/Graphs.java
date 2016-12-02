@@ -26,7 +26,7 @@ import productions.funky.com.smokenomore.util.DateTimeMappers;
 /**
  * Created by hborah on 9/11/16.
  */
-public class Graphs extends Fragment {
+public class Graphs extends Fragment{
     private View rootView;
     DateTimeMappers dTMappers;
 
